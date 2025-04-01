@@ -6,9 +6,11 @@ function extractVideoId(url) {
   return match ? match[1] : null; // Si l'ID est trouvé, il est retourné, sinon null.
 }
 
+const prod = "https://consumer-habits-production.up.railway.app";
+
 // Fonction pour envoyer l'ID de la vidéo au backend
 function sendVideoIdToBackend(videoId) {
-  fetch(`http://localhost:3000/content`, {
+  fetch(`${prod}/content`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
