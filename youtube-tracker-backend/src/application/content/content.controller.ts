@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import {
   AuthenticatedRequest,
   JwtAuthGuard,
@@ -28,5 +37,39 @@ export class ContentController {
   @Get()
   async listContent(@Req() req: AuthenticatedRequest) {
     return await this.contentService.listContent(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('youtube')
+  async listYoutubeContent(@Req() req: AuthenticatedRequest) {
+    return await this.contentService.listYoutubeContentGroupedByChannel(
+      req.user,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('top-channels')
+  async getUserTopChannels(
+    @Req() req: AuthenticatedRequest,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ) {
+    return await this.contentService.getTopChannels({
+      page,
+      limit,
+      user: req.user,
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('author/:authorId')
+  async getUserTopAuthors(
+    @Req() req: AuthenticatedRequest,
+    @Param('authorId') authorId: string,
+  ) {
+    return await this.contentService.getChannelContents({
+      user: req.user,
+      authorId,
+    });
   }
 }

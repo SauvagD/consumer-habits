@@ -25,6 +25,26 @@ export class GoogleApi {
     }
   }
 
+  async getYouTubeChannelDetails(ids: string[]) {
+    const idParam = ids.join(',');
+
+    const detailsRes = await axios.get(`${this.apiUrl}/channels`, {
+      params: {
+        part: 'snippet,statistics',
+        id: idParam,
+        key: this.apiKey,
+      },
+    });
+
+    return detailsRes.data.items.map((channel) => ({
+      id: channel.id,
+      title: channel.snippet.title,
+      description: channel.snippet.description,
+      image: channel.snippet.thumbnails.high.url,
+      stats: channel.statistics,
+    }));
+  }
+
   async searchVideos(query: string, maxResults = 5) {
     try {
       const response = await axios.get(`${this.apiUrl}/search`, {

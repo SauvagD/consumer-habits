@@ -48,4 +48,28 @@ export class MediaService {
     }
     return media as Media;
   }
+
+  async assignAuthorToMedia() {
+    const medias = await this.mediaRepository.find();
+
+    for (const media of medias) {
+      if (media.origin === 'youtube' && media.resource_author === null) {
+        const channelId = await this.getYoutubeChannelIdFromVideoId(
+          media.resource_id,
+        );
+        console.log('channelId', channelId);
+        media.resource_author = channelId;
+
+        await this.mediaRepository.save(media);
+      }
+    }
+  }
+
+  private async getYoutubeChannelIdFromVideoId(
+    videoId: string,
+  ): Promise<string> {
+    const response = await this.googleApi.getVideoDetails(videoId);
+
+    return response.items[0].snippet.channelId;
+  }
 }

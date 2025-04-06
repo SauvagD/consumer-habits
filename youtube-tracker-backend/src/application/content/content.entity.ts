@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -14,6 +15,8 @@ export class Content {
   id: number;
 
   @ManyToOne(() => User, { eager: true })
+  @Index('user_index')
+  @Index('user_media_index', ['user', 'media'])
   user: User;
 
   @ManyToOne(() => Media, { eager: true })
