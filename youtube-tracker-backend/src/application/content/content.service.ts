@@ -82,7 +82,7 @@ export class ContentService {
 
   async getTopChannels({
     page = 1,
-    limit = 5,
+    limit = 30,
     user,
   }: {
     page: number;

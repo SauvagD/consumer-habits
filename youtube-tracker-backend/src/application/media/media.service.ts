@@ -28,7 +28,6 @@ export class MediaService {
         const youtubeVideoDetails =
           await this.googleApi.getVideoDetails(resourceId);
         const videoSnippet = youtubeVideoDetails.items[0].snippet;
-        console.log('videoSnippet.categoryId', videoSnippet.categoryId);
         if (Number(videoSnippet.categoryId) !== 10) {
           console.log('passfdqsgds');
           throw new BadRequestException('Is not music category.');
@@ -39,6 +38,7 @@ export class MediaService {
         };
         media = this.mediaRepository.create({
           resource_id: resourceId,
+          resource_author: videoSnippet.channelId,
           origin,
           type: 'music',
           ...mediaBody,
@@ -57,7 +57,6 @@ export class MediaService {
         const channelId = await this.getYoutubeChannelIdFromVideoId(
           media.resource_id,
         );
-        console.log('channelId', channelId);
         media.resource_author = channelId;
 
         await this.mediaRepository.save(media);

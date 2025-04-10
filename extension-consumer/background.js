@@ -6,7 +6,7 @@ function extractVideoId(url) {
   return match ? match[1] : null; // Si l'ID est trouvé, il est retourné, sinon null.
 }
 
-const prod = "https://consumer-habits-production.up.railway.app";
+const prod = "http://localhost:3000"; // "https://consumer-habits-production.up.railway.app";
 
 // Fonction pour envoyer l'ID de la vidéo au backend
 function sendVideoIdToBackend(videoId) {
@@ -25,6 +25,7 @@ function sendVideoIdToBackend(videoId) {
 
 // Écouter les messages du script de contenu
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("onMessage");
   if (message.type === "VIDEO_ID" && message.videoId) {
     sendVideoIdToBackend(message.videoId);
   }
@@ -34,6 +35,7 @@ let tabId = "";
 
 // Écoute les mises à jour des onglets
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  console.log("onUpdated", tab.url, changeInfo.url);
   if (tab.url && tab.url.includes("youtube.com/watch") && changeInfo.url) {
     console.log("Nouvelle URL détectée :", changeInfo.url);
     tabId = tabId;

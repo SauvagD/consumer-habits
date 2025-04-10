@@ -1,7 +1,6 @@
-import { type RouteConfig, route } from "@react-router/dev/routes";
+import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
-  route("", "./routes/home/layout.tsx", [
-    route(":channelId", "./routes/home/content.tsx"),
-  ]),
+  index("./routes/home/layout.tsx"),
+  route(":channelId", "./routes/home/content.tsx"),
 ] satisfies RouteConfig;

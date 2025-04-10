@@ -35,6 +35,9 @@ export class GoogleApi {
         key: this.apiKey,
       },
     });
+    if (!detailsRes.data.items) {
+      return [];
+    }
 
     return detailsRes.data.items.map((channel) => ({
       id: channel.id,
