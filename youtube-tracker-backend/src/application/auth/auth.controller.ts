@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 
@@ -11,7 +11,7 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Get('google')
+  /*   @Get('google')
   redirectToGoogle() {
     return this.authService.getAuthUrl();
   }
@@ -22,5 +22,5 @@ export class AuthController {
 
     // 💾 Ici tu peux stocker les tokens pour l'utilisateur dans ta DB
     console.log('✅ Tokens récupérés :', tokens);
-  }
+  } */
 }

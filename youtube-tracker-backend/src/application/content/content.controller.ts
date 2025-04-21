@@ -72,4 +72,12 @@ export class ContentController {
       authorId,
     });
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('music-summary')
+  async getMusicSummary(@Req() req: AuthenticatedRequest) {
+    return await this.contentService.getMusicSummary({
+      user: req.user,
+    });
+  }
 }

@@ -1,18 +1,16 @@
-import { Tab, Tabs } from "./tabs";
+import SideBar from "./side-bar";
 
-export const Layout = ({ children }: any) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex flex-row ">
-      <aside className="w-1/6"></aside>
-      <section className="w-5/6 flex flex-col py-20">
-        <header>
-          <h1></h1>
-          <Tabs>
-            <Tab></Tab>
-          </Tabs>
-        </header>
-        <div></div>
+    <div className="flex flex-row h-lvh w-lvw">
+      <section className="w-1/8 bg-gradient-to-r from-gray-200 to-white h-lvh flex items-center justify-center">
+        <SideBar />
       </section>
-    </main>
+      <main className="flex-1 flex justify-center">
+        <div className="max-w-5xl w-full py-8">{children}</div>
+      </main>
+    </div>
   );
 };
+
+export default Layout;

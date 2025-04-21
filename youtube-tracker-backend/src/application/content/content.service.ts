@@ -140,4 +140,39 @@ export class ContentService {
     });
     return contents;
   }
+
+  async getMusicSummary({ user }) {
+    const lastTenMusicPromise = this.contentRepository.find({
+      where: {
+        user: {
+          id: user.id,
+        },
+      },
+      order: {
+        lastViewedAt: 'DESC',
+      },
+      take: 10,
+    });
+    const topArtistsPromise = this.contentRepository
+      .createQueryBuilder('content')
+      .leftJoin('content.media', 'media')
+      .select('media.resource_author', 'artist')
+      .addSelect('media.image', 'image')
+      .addSelect('media.origin', 'origin')
+      .addSelect('media.resource_author', 'name')
+      .addSelect('COUNT(*)', 'views') // ou SUM(content.views) si tu as une colonne `views`
+      .where('media.origin = :origin', { origin: 'youtube' }) // optionnel
+      .andWhere('media.resource_author IS NOT NULL')
+      .groupBy('media.resource_author')
+      .addGroupBy('media.image')
+      .addGroupBy('media.origin')
+      .orderBy('views', 'DESC')
+      .limit(3)
+      .getRawMany();
+    const [music, artists] = await Promise.all([
+      lastTenMusicPromise,
+      topArtistsPromise,
+    ]);
+    return { music, artists };
+  }
 }
