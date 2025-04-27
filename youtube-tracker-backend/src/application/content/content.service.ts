@@ -173,6 +173,8 @@ export class ContentService {
       lastTenMusicPromise,
       topArtistsPromise,
     ]);
+
+    console.log('artists', artists);
     return { music, artists };
   }
 }
